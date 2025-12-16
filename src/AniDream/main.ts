@@ -65,7 +65,7 @@ class Provider {
 
             return {
                 id: cleanLang,
-                url: `https://asstovtt.jaiet7.workers.dev/?url=${encodeURIComponent(s.url)}`,
+                url: s.url,
                 language: `${cleanLang} - ${s.title ?? ""}`,
                 isDefault: s.is_default ?? false,
             };

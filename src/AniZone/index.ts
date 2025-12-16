@@ -110,31 +110,15 @@ class Provider {
             sources.push({ url: masterUrl, quality: "auto" });
         }
 
-        // proxy local correcto
-        const proxy = "http://127.0.0.1:43211/api/v1/proxy";
-
-        // headers comunes
-        const headers = {
-            "Accept": "*/*",
-            "Accept-Language": "en-US,en;q=0.9",
-            "Origin": "https://anizone.to",
-            "Referer": "https://anizone.to/",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
-        };
-
-
-        // procesar subtítulos con proxy
         const trackRegex = /<track[^>]+src=([^ >]+)[^>]*label="([^"]+)"[^>]*srclang="([^"]+)"[^>]*(default)?/gi;
         const subtitles: VideoSubtitle[] = [];
 
         while ((match = trackRegex.exec(html)) !== null) {
             const [, src, label, lang, isDefault] = match;
 
-            const workerUrl = `https://asstovtt.jaiet7.workers.dev/?url=${encodeURIComponent(src)}`;
-
             subtitles.push({
                 id: lang,
-                url: workerUrl, // <-- aquí el worker
+                url: src,
                 language: label
                     .replace(/_/g, " ")
                     .replace(/\[(.*?)]/g, "($1)")
@@ -144,10 +128,15 @@ class Provider {
             });
         }
 
-
         return {
             server: _server,
-            headers,
+            headers: {
+                "Accept": "*/*",
+                "Accept-Language": "en-US,en;q=0.9",
+                "Origin": "https://anizone.to",
+                "Referer": "https://anizone.to/",
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+            },
             videoSources: sources.map(s => ({
                 url: masterUrl,
                 type: "m3u8" as VideoSourceType,
@@ -156,5 +145,4 @@ class Provider {
             })),
         };
     }
-
 }
