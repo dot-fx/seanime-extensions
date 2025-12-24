@@ -45,7 +45,7 @@ class Provider {
     }
 
     async search(opts: AnimeSearchOptions): Promise<AnimeTorrent[]> {
-        const res = await fetch(`${this.api}/q.php?q=${encodeURIComponent(opts.query)}&cat=200`);
+        const res = await fetch(`${this.api}/q.php?q=${encodeURIComponent(opts.query)}`);
         const json = await res.json();
 
         const filtered = json.filter((t: any) => Number(t.seeders) > 0);

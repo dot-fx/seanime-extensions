@@ -1,7 +1,7 @@
 {
   "id": "simkl",
   "name": "Simkl",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "manifestURI": "https://raw.githubusercontent.com/jabifx/seanime-extensions/master/src/SIMKL/manifest.json",
   "language": "typescript",
   "type": "custom-source",
