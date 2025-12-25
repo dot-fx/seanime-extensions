@@ -10,7 +10,7 @@ class Provider {
 
     async search(opts: { query: string }): Promise<SearchResult[]> {
         const vrf = this.generate(opts.query.trim());
-        const res = await fetch(`${this.api}/ajax/manga/search?keyword=${opts.query.replace(" ", "+")}&vrf=${vrf}`);
+        const res = await fetch(`${this.api}/ajax/manga/search?keyword=${opts.query.replaceAll(" ", "+")}&vrf=${vrf}`);
         const data = await res.json();
 
         if (!data?.result?.html) return [];

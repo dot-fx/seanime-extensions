@@ -1,7 +1,7 @@
 {
   "id": "mangafire",
   "name": "MangaFire",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "manifestURI": "https://raw.githubusercontent.com/jabifx/seanime-extensions/master/src/MangaFire/manifest.json",
   "language": "typescript",
   "type": "manga-provider",
