@@ -2,15 +2,15 @@
   "id": "oneko",
   "name": "Onekojs",
   "version": "1.0.0",
-  "manifestURI": "https://raw.githubusercontent.com/jabifx/seanime-extensions/master/src/oneko/manifest.json",
+  "manifestURI": "https://raw.githubusercontent.com/dot-fx/seanime-extensions/master/src/oneko/manifest.json",
   "language": "typescript",
   "type": "plugin",
   "description": "Implements the famous Oneko.js script on seanime.",
   "author": "jabifx",
-  "icon": "https://raw.githubusercontent.com/jabifx/seanime-extensions/master/src/oneko/icon.png",
+  "icon": "https://raw.githubusercontent.com/dot-fx/seanime-extensions/master/src/oneko/icon.png",
   "website": "",
   "lang": "multi",
-  "payloadURI": "https://raw.githubusercontent.com/jabifx/seanime-extensions/master/src/oneko/main.ts",
+  "payloadURI": "https://raw.githubusercontent.com/dot-fx/seanime-extensions/master/src/oneko/main.ts",
   "plugin": {
     "version": "1",
     "permissions": { }
