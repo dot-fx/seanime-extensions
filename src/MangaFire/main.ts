@@ -108,20 +108,26 @@ class Provider {
             const chapter = e.attr("data-number") || "";
             const id = e.attr("data-id") || "";
             const title = e.attr("title") || "";
-            const language = this.normalizeLanguageCode(lang)
+            const language = this.normalizeLanguageCode(lang);
 
             langChapters.push({
-                id: id,
+                id,
                 url: `${this.api}${url}`,
-                title: title,
-                chapter: chapter,
+                title,   // lo dejamos vacío si no existe
+                chapter,
                 index: 0,
-                language: language,
+                language,
             });
         });
 
         langChapters.reverse();
-        langChapters.forEach((ch, i) => (ch.index = i));
+
+        langChapters.forEach((ch, i) => {
+            ch.index = i;
+            if (!ch.title) {
+                ch.title = `chapter ${i + 1}`;
+            }
+        });
 
         return langChapters;
     }
