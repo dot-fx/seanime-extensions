@@ -23,7 +23,7 @@ class Provider {
         const data = await res.json();
 
         return data.map((anime: any) => ({
-            id: anime.title.toLowerCase().replace(/\s+/g, '-'),
+            id: anime.slug,
             title: anime.title,
             url: `${this.api}/anime/${anime.slug}`,
             subOrDub: "both",
