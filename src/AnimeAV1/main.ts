@@ -1,4 +1,4 @@
-/// <reference path="../online-streaming-provider.d.ts" />
+// <reference path="../online-streaming-provider.d.ts" />
 
 class Provider {
     baseUrl = "https://animeav1.com";
@@ -37,9 +37,6 @@ class Provider {
 
                     if (!title || !slug) return null;
 
-                    // --- LÓGICA HIANIME APLICADA ---
-                    // Guardamos el tipo (sub/dub) dentro del ID usando un objeto JSON stringified
-                    // Esto viaja a findEpisodes
                     const idPayload = JSON.stringify({ slug: slug, type: isDub ? "dub" : "sub" });
 
                     return {
@@ -70,7 +67,6 @@ class Provider {
             if (!response.ok) return [];
             const json = await response.json();
 
-            // Pasamos query.dub para decidir qué ID generar
             return this._resolveRemixData(json, query.dub || false);
         } catch (error) {
             console.error("Error searching AnimeAV1:", error);
@@ -79,8 +75,7 @@ class Provider {
     }
 
     async findEpisodes(animeId: string): Promise<EpisodeDetails[]> {
-        // 1. DESEMPAQUETAMOS EL ID QUE VIENE DE SEARCH
-        // Ejemplo animeId: '{"slug":"one-piece","type":"sub"}'
+
         let slug: string;
         let type: "sub" | "dub" = "sub";
 
@@ -89,7 +84,7 @@ class Provider {
             slug = parsed.slug;
             if (parsed.type) type = parsed.type;
         } catch {
-            // Fallback por si acaso llega un ID plano
+
             slug = animeId;
         }
 
@@ -105,7 +100,6 @@ class Provider {
             let data: any[] | null = null;
             let mediaDescriptor: any = null;
 
-            // Buscamos el nodo correcto
             for (let i = 0; i < nodes.length; i++) {
                 const node = nodes[i];
                 if (!node?.data) continue;
@@ -144,13 +138,11 @@ class Provider {
                 if (typeof ep.title === 'number') realTitle = data![ep.title];
                 else if (ep.title) realTitle = ep.title;
 
-                // --- LÓGICA HIANIME APLICADA ---
-                // Aquí construimos el ID del EPISODIO incluyendo el tipo (sub/dub)
-                // que recibimos del ID del anime.
                 const episodeIdPayload = JSON.stringify({
                     slug: slug,
                     number: realNumber,
-                    type: type // <--- Pasamos "sub" o "dub" aquí
+                    type: type
+
                 });
 
                 return {
@@ -168,16 +160,13 @@ class Provider {
         }
     }
 
-    // Ya no necesitamos el 3er argumento 'category', lo sacamos del ID
     async findEpisodeServer(episodeOrId: any, _server: string): Promise<EpisodeServer> {
         let slug: string;
         let number: number;
-        let type: string = "sub"; // Por defecto sub
+        let type: string = "sub";
 
         const idStr = typeof episodeOrId === "string" ? episodeOrId : episodeOrId.id;
 
-        // 2. DESEMPAQUETAMOS EL ID DEL EPISODIO
-        // Ejemplo idStr: '{"slug":"one-piece","number":1,"type":"dub"}'
         try {
             const parsed = JSON.parse(idStr);
             slug = parsed.slug;
@@ -213,9 +202,8 @@ class Provider {
         const embedsIndex = root.embeds;
         const embedsObj = data[embedsIndex];
 
-        // --- LÓGICA HIANIME APLICADA ---
-        // Usamos la variable 'type' que extrajimos del ID para elegir la lista correcta
-        const catKey = type.toUpperCase(); // "SUB" o "DUB"
+        const catKey = type.toUpperCase();
+
         const listIndex = embedsObj?.[catKey];
 
         if (typeof listIndex !== "number") throw new Error(`No hay contenido en ${catKey}`);
