@@ -126,21 +126,6 @@ class Provider {
             const image = mediaId ? `${this.cdnUrl}/backdrops/${mediaId}.jpg` : undefined;
 
             return episodeIndexes
-                .filter((epIdx: number, i: number) => {
-                    const ep = data![epIdx];
-
-                    let realNumber = i + 1;
-
-                    if (typeof ep.number === 'number') {
-                        const resolvedNum = data![ep.number];
-
-                        if (typeof resolvedNum === 'number') {
-                            realNumber = resolvedNum;
-                        }
-                    }
-
-                    return Number.isInteger(realNumber) && realNumber > 0;
-                })
                 .map((epIdx: number, i: number) => {
                     const ep = data![epIdx];
 
@@ -153,6 +138,8 @@ class Provider {
                             realNumber = resolvedNum;
                         }
                     }
+
+                    if (!Number.isInteger(realNumber) || realNumber <= 0) return null;
 
                     let realTitle = `Episodio ${realNumber}`;
 
@@ -175,7 +162,8 @@ class Provider {
                         url: `${this.baseUrl}/media/${slug}/${realNumber}`,
                         image
                     };
-                });
+                })
+                .filter(Boolean) as EpisodeDetails[];
 
         } catch (err) {
             console.error('Error finding episodes:', err);
@@ -259,7 +247,7 @@ class Provider {
 
         return {
             server: "HLS",
-            headers: { Referer: "null" },
+            headers: { Referer: "null", "Sec-Fetch-Site": "same-origin" },
             videoSources: [chosen]
         };
     }
